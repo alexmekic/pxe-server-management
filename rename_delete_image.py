@@ -1,4 +1,5 @@
-import list_images_and_entries, glob, subprocess, os
+from . import list_images_and_entries
+import glob, subprocess, os
 
 def rename_image_name():
     image_list = list_images_and_entries.list_images()

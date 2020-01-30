@@ -1,5 +1,4 @@
-import clonezilla_updater, freebsd_updater
-import change_server_config
+from . import clonezilla_updater, freebsd_updater, change_server_config
 import subprocess
 
 def update_menu(clonezilla_ver, freebsd_version):

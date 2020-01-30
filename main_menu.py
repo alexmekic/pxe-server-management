@@ -1,5 +1,5 @@
-import retrieve_info, adv_and_update_menu, sync_images_boot_menu_files, list_images_and_entries
-import add_remove_edit_boot_entries, rename_delete_image
+from . import retrieve_info, adv_and_update_menu, sync_images_boot_menu_files, list_images_and_entries
+from . import add_remove_edit_boot_entries, rename_delete_image
 import os, re, glob, sys
 
 def main():

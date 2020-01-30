@@ -1,4 +1,4 @@
-import list_images_and_entries, retrieve_info
+from . import list_images_and_entries, retrieve_info
 import os, glob, shutil, fileinput, re, sys
 
 def add_restore_entry():
@@ -101,6 +101,7 @@ def revert_menu_change():
             if revert_option == 'y':
                 os.remove('/pxe/tftp/boot.ipxe')
                 shutil.copy2('/pxe/tftp/boot.ipxe.bak', '/pxe/tftp/boot.ipxe')
+                print("Boot menu file reverted successfully")
                 break
             elif revert_option == 'n':
                 print("Operation aborted")
