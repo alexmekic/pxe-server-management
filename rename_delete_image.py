@@ -1,4 +1,4 @@
-from . import list_images_and_entries
+import list_images_and_entries
 import glob, subprocess, os
 
 def rename_image_name():

@@ -34,7 +34,6 @@ def list_entry():
                     if line.rstrip() == ":" + id_find:
                         restore_flag = False
                         kernel_entry = list(islice(f, 4))[-3].split()
-                        print(kernel_entry)
                         for i, image_find in enumerate(kernel_entry):
                             if image_find in restore_types:
                                 restore_flag = True

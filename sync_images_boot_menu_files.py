@@ -1,4 +1,4 @@
-from . import change_server_config
+import change_server_config
 import subprocess, os, shutil, dirsync, fileinput
 
 def sync_server(main_server_ip):
