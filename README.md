@@ -1,6 +1,6 @@
 # PXE Server Management Application
 
-Easily manage iPXE boot menu entries and operating system restore images backed up via Clonezilla written in Python for retoring images to client computers over network
+Easily manage iPXE boot menu entries and operating system restore images backed up via Clonezilla written in Python for restoring images to client computers over network
 
 ## Features
 ### List all restore images and boot entries
