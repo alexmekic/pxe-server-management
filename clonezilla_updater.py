@@ -1,4 +1,4 @@
-import os, shutil, glob, re
+import os, shutil, glob, re, requests
 from zipfile import ZipFile
 from bs4 import BeautifulSoup
 
