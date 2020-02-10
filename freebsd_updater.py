@@ -1,4 +1,4 @@
-import subprocess
+import subprocess, requests
 from bs4 import BeautifulSoup
 
 def check_package_patch_updates():
