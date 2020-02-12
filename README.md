@@ -1,4 +1,4 @@
-# Clonezilla PXE Server Management Application
+# Clonezilla iPXE Server Management Application
 
 Easily manage Clonezilla iPXE boot menu entries and operating system restore images backed up written in Python for restoring images to client computers over network
 
@@ -51,7 +51,7 @@ Easily manage Clonezilla iPXE boot menu entries and operating system restore ima
 
 - FreeBSD 12.0 or later
 - 2nd hard drive or SSD with `/pxe` mounted on startup from `/etc/fstab` formatted as UFS or ZFS
-- `postinstall.sh` executed from pxe-server-management-script project with static IP, DHCP server, admin account creation and password, Samba, iPXE and Clonezilla configured
+- `postinstall.sh` executed from `clonezillaserver-deployment` project with static IP, DHCP server, admin account creation and password, Samba, iPXE and Clonezilla configured
 
 ## Release History
 
