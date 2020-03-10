@@ -57,3 +57,5 @@ Easily manage Clonezilla iPXE boot menu entries and operating system restore ima
 
 - 1.0
   - Initial release
+- 1.0.1
+  - Fixed missing 'wget' module for downloading updated version of Clonezilla
