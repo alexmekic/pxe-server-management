@@ -1,4 +1,4 @@
-import os, shutil, glob, re, requests
+import os, shutil, glob, re, requests, wget
 from zipfile import ZipFile
 from bs4 import BeautifulSoup
 
@@ -55,9 +55,9 @@ def backup_clonezilla():
 
 def update_clonezilla(latest_version):
     print("Downloading new Clonezilla update...")
-    url1 = 'http://free.nchc.org.tw/clonezilla-live/stable/clonezilla-live-' + str(latest_version) + '-amd64.zip'
+    url = 'http://free.nchc.org.tw/clonezilla-live/stable/clonezilla-live-' + str(latest_version) + '-amd64.zip'
     try:
-        wget.download(url=url1, out='/pxe/tftp/clonezilla_update.zip')
+        wget.download(url=url, out='/pxe/tftp/clonezilla_update.zip')
         print('done')
     except:
         print("unable to download Clonezilla update.")
