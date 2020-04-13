@@ -39,7 +39,10 @@ def adv_menu(ip_addr, netmask_addr):
         elif adv_prompt == "2":
             change_server_config.change_dhcp_range()
         elif adv_prompt == "3":
+            print("Enter new admin login account password.")
             subprocess.call('passwd', shell=True)
+            print("Enter new admin Samba password for access of files on server from Windows.")
+            subprocess.call('smbpasswd', shell=True)
         elif adv_prompt == "4":
             subprocess.call('sudo chown -R admin:admin /pxe/images', shell=True)
             subprocess.call('find /pxe/images -type d -print0 | sudo xargs -0 chmod 0755', shell=True)

@@ -27,9 +27,9 @@ def main():
         elif prompt == 4:
             add_remove_edit_boot_entries.change_attached_restore_image()
         elif prompt == 5:
-            rename_delete_image.rename_image_name()
-        elif prompt == 6:
             add_remove_edit_boot_entries.set_default_entry()
+        elif prompt == 6:
+            rename_delete_image.rename_image_name()
         elif prompt == 7:
             add_remove_edit_boot_entries.revert_menu_change()
         elif prompt == 8:
@@ -51,13 +51,13 @@ def main():
 def user_input():
     while True:
         options = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '0']
-        print("PXE Server Management v1.0.1\n")
+        print("PXE Server Management v1.1\n")
         print("1: List current entries and restore images attached")
-        print("2: List Restore Images in server\n")
-        print("3: Add New Restore entry")
+        print("2: List Restore Images in server")
+        print("3: Add New Restore entry\n")
         print("4: Change Attached Restore Image in entry")
-        print("5: Rename Restore Image in server")
-        print("6: Change Default Entry")
+        print("5: Change Default Entry")
+        print("6: Rename Restore Image in server")
         print("7: Revert changes in menu file\n")
         print("8: Delete entry")
         print("9: Delete image\n")
