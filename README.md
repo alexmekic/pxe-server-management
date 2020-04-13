@@ -58,7 +58,7 @@ Easily manage Clonezilla iPXE boot menu entries and operating system restore ima
 - 1.0
   - Initial release
   - 1.0.1
-    - Fix issue where certain Python modules were not loaded
+    - Fixed missing 'wget' module for downloading updated version of Clonezilla
 - 1.1
   - Added password change prompt for Samba when change admin passwrod option is selected
   - Reorganized main menu selection options
