@@ -60,5 +60,5 @@ Easily manage Clonezilla iPXE boot menu entries and operating system restore ima
   - 1.0.1
     - Fixed missing 'wget' module for downloading updated version of Clonezilla
 - 1.1
-  - Added password change prompt for Samba when change admin passwrod option is selected
+  - Added password change prompt for Samba when change admin password option is selected
   - Reorganized main menu selection options
