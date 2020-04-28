@@ -46,10 +46,11 @@ Easily manage Clonezilla iPXE boot menu entries and operating system restore ima
 - Reset permissions on /pxe/images
   - Used for accessing images from Windows
 - Shutdown and reboot the server
+- Check health of ZFS storage pool
 
 ## Requirements
 
-- FreeBSD 12.0 or later
+- FreeBSD 12.1 or later
 - 2nd hard drive or SSD with `/pxe` mounted on startup from `/etc/fstab` formatted as UFS or ZFS
 - `postinstall.sh` executed from `clonezillaserver-deployment` project with static IP, DHCP server, admin account creation and password, Samba, iPXE and Clonezilla configured
 
@@ -62,3 +63,5 @@ Easily manage Clonezilla iPXE boot menu entries and operating system restore ima
 - 1.1
   - Added password change prompt for Samba when change admin password option is selected
   - Reorganized main menu selection options
+- 1.2
+  - Added feature to check ZFS storage pool health before launch of application
