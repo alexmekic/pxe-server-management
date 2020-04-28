@@ -1,11 +1,18 @@
 import retrieve_info, adv_and_update_menu, sync_images_boot_menu_files, list_images_and_entries
 import add_remove_edit_boot_entries, rename_delete_image
-import os, re, glob, sys
+import os, re, glob, sys, platform
 
 def main():
+    if retrieve_info.zfs_health():
+        continue
+    else:
+        sys.exit()
     while True:
-        freebsd_version = os.popen('uname -r').read()
-        print("\nFreeBSD version: " + str(freebsd_version), end='', flush=True)
+        if platform.system() == "FreeBSD":
+            print("\nFreeBSD version: " + platform.release(), end='', flush=True)
+        #elif platform.system() == "Linux":
+        #    linux_os = distro.linux_distribution()
+        #    print("\nLinux version: " + linux_os[0] + ' ' + linux_os[1] + ' ' + linux_os[2], end='', flush=True)
         if glob.glob('/pxe/tftp/clonezilla/Clonezilla-Live-Version'):
             with open('/pxe/tftp/clonezilla/Clonezilla-Live-Version') as f:
                 clonezilla_ver = f.readline()
@@ -51,14 +58,14 @@ def main():
 def user_input():
     while True:
         options = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '0']
-        print("PXE Server Management v1.1\n")
+        print("PXE Server Management v1.2\n")
         print("1: List current entries and restore images attached")
         print("2: List Restore Images in server")
         print("3: Add New Restore entry\n")
         print("4: Change Attached Restore Image in entry")
         print("5: Change Default Entry")
         print("6: Rename Restore Image in server\n")
-        print("7: Revert changes in menu file")
+        print("7: Revert change in menu file to previous state")
         print("8: Delete entry")
         print("9: Delete image\n")
         print("10: Sync restore images and menu file to another server\n")
