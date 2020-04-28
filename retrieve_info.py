@@ -28,3 +28,20 @@ def get_image_partitions(image_dir):
         elif 'savedisk' in word:
             restore_type = 'restoredisk'
     return restore_type, (partitions.join(partition_list))
+    
+def zfs_health():
+    zfs_state = subproccess.check_output("zpool status | grep state | awk '{print $2}'", shell=True)
+    print("Current Disk Health state: " + zfs_state)
+    zfs_online_errors = subproccess.check_output("zpool status | grep ONLINE | grep -v state | awk '{print $3 $4 $5}' | grep -v 000")
+    if zfs_state == "ONLINE" and zfs_online_errors:
+        subprocess.call("zpool status", shell=True)
+        print("Disk errors have been reported on the PXE storage pool. Review output below for further action required.")
+        input("Press Enter to continue loading PXE Management Application...")
+        return True
+    elif zfs_state == "DEGRADED" or "UNAVIL":
+        subprocess.call("zpool status", shell=True)
+        print("PXE storage pool is degraded. Please replace the bad disk from output above and wait for pool to be resilvered before running application again.")
+        print("PXE Management Application halted")
+        return False
+    else:
+        return True
