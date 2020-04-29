@@ -3,13 +3,11 @@ import add_remove_edit_boot_entries, rename_delete_image
 import os, re, glob, sys, platform
 
 def main():
-    if retrieve_info.zfs_health():
-        continue
-    else:
+    if not retrieve_info.zfs_health():
         sys.exit()
     while True:
         if platform.system() == "FreeBSD":
-            print("\nFreeBSD version: " + platform.release(), end='', flush=True)
+            print("\nFreeBSD version: " + platform.release())
         #elif platform.system() == "Linux":
         #    linux_os = distro.linux_distribution()
         #    print("\nLinux version: " + linux_os[0] + ' ' + linux_os[1] + ' ' + linux_os[2], end='', flush=True)
@@ -46,7 +44,7 @@ def main():
         elif prompt == 10:
             sync_images_boot_menu_files.sync_server(ip_addr)
         elif prompt == 11:
-            adv_and_update_menu.update_menu(clonezilla_ver, freebsd_version)
+            adv_and_update_menu.update_menu(clonezilla_ver, platform.release())
         elif prompt == 12:
             adv_and_update_menu.adv_menu(ip_addr, netmask_addr)
         elif prompt == 0:
