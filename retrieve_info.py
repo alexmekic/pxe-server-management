@@ -1,5 +1,5 @@
 from netifaces import interfaces, ifaddresses, AF_INET
-import subprocess
+import subprocess, os
 
 def active_ip():
     ip_list, subnet_list = [], []
@@ -31,15 +31,15 @@ def get_image_partitions(image_dir):
     return restore_type, (partitions.join(partition_list))
     
 def zfs_health():
-    zfs_state = subprocess.check_output("zpool status | grep state | awk '{print $2}'", shell=True)
+    zfs_state = os.popen("zpool status | grep state | awk '{print $2}'").read().strip()
     print("Current Disk Health state: " + zfs_state)
-    zfs_online_errors = subprocess.check_output("zpool status | grep ONLINE | grep -v state | awk '{print $3 $4 $5}' | grep -v 000")
+    zfs_online_errors = os.popen("zpool status | grep ONLINE | grep -v state | awk '{print $3 $4 $5}' | grep -v 000").read().strip()
     if zfs_state == "ONLINE" and zfs_online_errors:
         subprocess.call("zpool status", shell=True)
-        print("Disk errors have been reported on the PXE storage pool. Review output below for further action required.")
+        print("Disk errors have been reported on the PXE storage pool. Review output above for further action required.")
         input("Press Enter to continue loading PXE Management Application...")
         return True
-    elif zfs_state == "DEGRADED" or "UNAVIL":
+    elif zfs_state == "DEGRADED" or zfs_state == "UNAVIL":
         subprocess.call("zpool status", shell=True)
         print("PXE storage pool is degraded. Please replace the bad disk from output above and wait for pool to be resilvered before running application again.")
         print("PXE Management Application halted")
