@@ -66,3 +66,5 @@ Easily manage Clonezilla iPXE boot menu entries and operating system restore ima
 - 1.2
   - Added feature to check ZFS storage pool health before launch of application
   - Rearranged main menu options
+  - 1.2.1
+    - Moved down location of newly created restore image entry by 1
