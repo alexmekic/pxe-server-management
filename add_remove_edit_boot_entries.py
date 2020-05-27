@@ -27,7 +27,7 @@ boot\n"""
                 shutil.copy2('/pxe/tftp/boot.ipxe', '/pxe/tftp/boot.ipxe.bak')
                 with open('/pxe/tftp/boot.ipxe', 'r') as f1:
                     t1 = f1.readlines()
-                t1.insert(6, entry1)
+                t1.insert(7, entry1)
                 t1.append(entry2)
                 with open('/pxe/tftp/boot.ipxe', 'w') as f2:
                     f2.writelines(t1)
