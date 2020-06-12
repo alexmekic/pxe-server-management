@@ -24,15 +24,15 @@ def main():
         print("Free space available in /pxe: " + free_space)
         prompt = user_input()
         if prompt == 1:
-            list_images_and_entries.list_entry()
-        elif prompt == 2:
-            list_images_and_entries.list_images()
-        elif prompt == 3:
             add_remove_edit_boot_entries.add_restore_entry()
+        elif prompt == 2:
+            list_images_and_entries.list_entry()
+        elif prompt == 3:
+            list_images_and_entries.list_images()
         elif prompt == 4:
-            add_remove_edit_boot_entries.change_attached_restore_image()
-        elif prompt == 5:
             add_remove_edit_boot_entries.set_default_entry()
+        elif prompt == 5:
+            add_remove_edit_boot_entries.change_attached_restore_image()
         elif prompt == 6:
             rename_delete_image.rename_image_name()
         elif prompt == 7:
