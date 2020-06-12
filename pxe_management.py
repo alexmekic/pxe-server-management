@@ -56,13 +56,13 @@ def main():
 def user_input():
     while True:
         options = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '0']
-        print("PXE Server Management v1.2.1\n")
+        print("PXE Server Management v1.3\n")
         print("1: List current entries and restore images attached")
-        print("2: List Restore Images in server")
-        print("3: Add New Restore entry\n")
+        print("2: List restore images in server")
+        print("3: Add New restore entry\n")
         print("4: Change Attached Restore Image in entry")
-        print("5: Change Default Entry")
-        print("6: Rename Restore Image in server\n")
+        print("5: Change default entry")
+        print("6: Rename restore image in server\n")
         print("7: Revert change in menu file to previous state")
         print("8: Delete entry")
         print("9: Delete image\n")

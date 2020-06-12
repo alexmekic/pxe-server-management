@@ -40,7 +40,7 @@ Easily manage Clonezilla iPXE boot menu entries and operating system restore ima
 ## Advanced Features
 
 - Change static IP address
-  - Updates all configuration files that depends on the static IP
+  - Updates all DHCP, and TFTP configuration files that depends on the static IP
 - Change DHCP server IP address range
 - Change admin account password
 - Reset permissions on /pxe/images
@@ -51,7 +51,7 @@ Easily manage Clonezilla iPXE boot menu entries and operating system restore ima
 ## Requirements
 
 - FreeBSD 12.1 or later
-- 2nd hard drive or SSD with `/pxe` mounted on startup from `/etc/fstab` formatted as UFS or ZFS
+- ZFS pool mounted as `/pxe`
 - `postinstall.sh` executed from `clonezillaserver-deployment` project with static IP, DHCP server, admin account creation and password, Samba, iPXE and Clonezilla configured
 
 ## Release History
@@ -66,5 +66,8 @@ Easily manage Clonezilla iPXE boot menu entries and operating system restore ima
 - 1.2
   - Added feature to check ZFS storage pool health before launch of application
   - Rearranged main menu options
-  - 1.2.1
-    - Moved down location of newly created restore image entry by 1
+- 1.3
+  - Edited output for list of images in tabular format
+  - Included size of images when listed
+  - Shifted location of new image restore entries down by 1 to accomodate new Clonezilla OS boot
+  - Revomed index number of restore entries and shifted table output to the left

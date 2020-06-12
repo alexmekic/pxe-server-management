@@ -1,13 +1,14 @@
-import os
+import os, subprocess
 from itertools import islice
 from netifaces import interfaces, ifaddresses, AF_INET
 
 def list_images():
     image_list = []
-    print("List of images found in /pxe/images\n")
+    print('{:<7s}{:<30s}{}'.format("Index:", "Images:", "Size:"))
     for index, images in enumerate(os.listdir("/pxe/images"), start=0):
-        image_list.append(os.path.basename(images))
-        print(str(index) + ": " + os.path.basename(images))
+        image_list.append(images)
+        imagesize = subprocess.check_output(['du','-sh', "/pxe/images/" + images]).split()[0].decode('utf-8')
+        print('{:<7s}{:<30s}{}'.format(str(index), images, imagesize))
     return image_list
 
 def list_entry():
@@ -43,10 +44,10 @@ def list_entry():
                             attached_image.append('N/A')
     entry_items = [delimit.replace('\n', '') for delimit in entry_items]
     print("\nCurrent entries in PXE server:\n")
-    fmt = '{:<4}{:<13}{:<40}{}'
-    print(fmt.format('', 'Entry ID', 'Entry Name', 'Attached Restore Image'))
+    fmt = '{:<13}{:<40}{}'
+    print(fmt.format('Entry ID', 'Entry Name', 'Attached Restore Image'))
     for i, (list_id, list_entry, list_image) in enumerate(zip(entry_id, entry_items, attached_image)):
-        print(fmt.format(i, list_id, list_entry, list_image))
+        print(fmt.format(list_id, list_entry, list_image))
     print("\nCurrent Default Entry: " + current_default_entry)
     print("Current Timeout set to (in seconds): " + str(timeout))
     return entry_id, entry_items, attached_image
