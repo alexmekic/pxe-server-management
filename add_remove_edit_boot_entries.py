@@ -21,7 +21,7 @@ def add_restore_entry():
                 entry1 = f"item {new_entry_id} Restore {new_entry_desc}\n"
                 entry2 = f""":{new_entry_id}
 set cz_root nfs://{nfs_ip}/{PXE.zfs_pool}/tftp/clonezilla/live
-kernel ${cz_root}/vmlinuz initrd=initrd.img boot=live username=user union=overlay config components noswap edd=on nomodeset nodmraid locales=en_US.UTF-8 keyboard-layouts=NONE ocs_live_run="ocs-live-general" ocs_live_extra_param="" ocs_live_batch=no net.ifnames=0 nosplash noprompt ip=frommedia netboot=nfs nfsroot={nfs_ip}:/{PXE.zfs_pool}/tftp/clonezilla ocs_prerun1="mount -t nfs {nfs_ip}:/{PXE.zfs_pool}/images /home/partimag -o noatime,nodiratime," oscprerun2="sleep 10" ocs_live_run="/usr/sbin/ocs-sr -g auto -e2 -scr -nogui -j2 -p reboot {restore_type} {image_list[int(new_image_entry)]} {partition_list}"
+kernel ${cz_root}/vmlinuz initrd=initrd.img boot=live username=user union=overlay config components noswap edd=on nomodeset nodmraid locales=en_US.UTF-8 keyboard-layouts=NONE ocs_live_run="ocs-live-general" ocs_live_extra_param="" ocs_live_batch=no net.ifnames=0 nosplash noprompt dhcp netboot=nfs nfsroot={nfs_ip}:/{PXE.zfs_pool}/tftp/clonezilla ocs_prerun1="mount -t nfs {nfs_ip}:/{PXE.zfs_pool}/images /home/partimag -o noatime,nodiratime," oscprerun2="sleep 10" ocs_live_run="/usr/sbin/ocs-sr -g auto -e2 -scr -nogui -j2 -p reboot {restore_type} {image_list[int(new_image_entry)]} {partition_list}"
 initrd ${cz_root}/initrd.img
 imgstat
 boot\n"""
