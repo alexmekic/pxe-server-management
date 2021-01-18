@@ -1,5 +1,6 @@
 import list_images_and_entries, retrieve_info
 import os, glob, shutil, fileinput, re, sys
+from zfs_pool import PXE
 
 def add_restore_entry():
     image_list = list_images_and_entries.list_images()
@@ -19,17 +20,17 @@ def add_restore_entry():
                 cz_root = '{cz_root}'
                 entry1 = f"item {new_entry_id} Restore {new_entry_desc}\n"
                 entry2 = f""":{new_entry_id}
-set cz_root nfs://{nfs_ip}/pxe/tftp/clonezilla/live
-kernel ${cz_root}/vmlinuz initrd=initrd.img boot=live username=user union=overlay config components noswap edd=on nomodeset nodmraid locales=en_US.UTF-8 keyboard-layouts=NONE ocs_live_run="ocs-live-general" ocs_live_extra_param="" ocs_live_batch=no net.ifnames=0 nosplash noprompt ip=frommedia netboot=nfs nfsroot={nfs_ip}:/pxe/tftp/clonezilla ocs_prerun1="mount -t nfs {nfs_ip}:/pxe/images /home/partimag -o noatime,nodiratime," oscprerun2="sleep 10" ocs_live_run="/usr/sbin/ocs-sr -g auto -e2 -scr -nogui -j2 -p reboot {restore_type} {image_list[int(new_image_entry)]} {partition_list}"
+set cz_root nfs://{nfs_ip}/{PXE.zfs_pool}/tftp/clonezilla/live
+kernel ${cz_root}/vmlinuz initrd=initrd.img boot=live username=user union=overlay config components noswap edd=on nomodeset nodmraid locales=en_US.UTF-8 keyboard-layouts=NONE ocs_live_run="ocs-live-general" ocs_live_extra_param="" ocs_live_batch=no net.ifnames=0 nosplash noprompt ip=frommedia netboot=nfs nfsroot={nfs_ip}:/{PXE.zfs_pool}/tftp/clonezilla ocs_prerun1="mount -t nfs {nfs_ip}:/{PXE.zfs_pool}/images /home/partimag -o noatime,nodiratime," oscprerun2="sleep 10" ocs_live_run="/usr/sbin/ocs-sr -g auto -e2 -scr -nogui -j2 -p reboot {restore_type} {image_list[int(new_image_entry)]} {partition_list}"
 initrd ${cz_root}/initrd.img
 imgstat
 boot\n"""
-                shutil.copy2('/pxe/tftp/boot.ipxe', '/pxe/tftp/boot.ipxe.bak')
-                with open('/pxe/tftp/boot.ipxe', 'r') as f1:
+                shutil.copy2(PXE.zfs_pool + '/tftp/boot.ipxe', PXE.zfs_pool + '/tftp/boot.ipxe.bak')
+                with open(PXE.zfs_pool + '/tftp/boot.ipxe', 'r') as f1:
                     t1 = f1.readlines()
                 t1.insert(7, entry1)
                 t1.append(entry2)
-                with open('/pxe/tftp/boot.ipxe', 'w') as f2:
+                with open(PXE.zfs_pool + '/tftp/boot.ipxe', 'w') as f2:
                     f2.writelines(t1)
                 print("New Restore entry for " + new_entry_desc + " added successfully")
         except (ValueError, IndexError):
@@ -51,7 +52,7 @@ def change_attached_restore_image():
                 if check_image_in_use(image_list[int(new_attached_image)]):
                     print("Restore image " + image_list[int(new_attached_image)] + " already attached to another restore entry")
                 else:
-                    with fileinput.FileInput('/pxe/tftp/boot.ipxe', inplace=True, backup='.bak') as file:
+                    with fileinput.FileInput(PXE.zfs_pool + '/tftp/boot.ipxe', inplace=True, backup='.bak') as file:
                         for line in file:
                             if line.startswith('kernel'):
                                 print(line.replace(attached_image[int(old_index)], image_list[int(new_attached_image)]), end='')
@@ -75,9 +76,9 @@ def delete_entry():
             index = entry_id.index(entry_delete)
             delete_confirm = input("Warning: Are you sure you want to delete " + entry_name[int(index)] + "? (y/n):")
             if delete_confirm == 'y':
-                shutil.copy2('/pxe/tftp/boot.ipxe', '/pxe/tftp/boot.ipxe.bak')
+                shutil.copy2(PXE.zfs_pool + '/tftp/boot.ipxe', PXE.zfs_pool + '/tftp/boot.ipxe.bak')
                 copying = True
-                with open('/pxe/tftp/boot.ipxe.bak', 'r') as inf, open('/pxe/tftp/boot.ipxe', 'w') as outf:
+                with open(PXE.zfs_pool + '/tftp/boot.ipxe.bak', 'r') as inf, open(PXE.zfs_pool + '/tftp/boot.ipxe', 'w') as outf:
                     for line in inf:
                         if copying:
                             if line.startswith(':') and entry_delete in line:
@@ -92,12 +93,12 @@ def delete_entry():
                 print("Invalid Entry ID")
 
 def revert_menu_change():
-    if glob.glob('/pxe/tftp/boot.ipxe.bak'):
+    if glob.glob(PXE.zfs_pool + '/tftp/boot.ipxe.bak'):
         while True:
             revert_option = input("Are you sure you want to revert to the previous state? (y/n): ")
             if revert_option == 'y':
-                os.remove('/pxe/tftp/boot.ipxe')
-                shutil.copy2('/pxe/tftp/boot.ipxe.bak', '/pxe/tftp/boot.ipxe')
+                os.remove(PXE.zfs_pool + '/tftp/boot.ipxe')
+                shutil.copy2(PXE.zfs_pool + '/tftp/boot.ipxe.bak', PXE.zfs_pool + '/tftp/boot.ipxe')
                 print("Boot menu file reverted successfully")
                 break
             elif revert_option == 'n':
@@ -130,8 +131,8 @@ def set_default_entry():
                         break
                     except ValueError:
                         print("Timeout value not valid")
-            shutil.copy2('/pxe/tftp/boot.ipxe', '/pxe/tftp/boot.ipxe.bak')
-            for line in fileinput.input('/pxe/tftp/boot.ipxe', inplace=True, backup='.bak'):
+            shutil.copy2(PXE.zfs_pool + '/tftp/boot.ipxe', PXE.zfs_pool + '/tftp/boot.ipxe.bak')
+            for line in fileinput.input(PXE.zfs_pool + '/tftp/boot.ipxe', inplace=True, backup='.bak'):
                 if line.strip().startswith('choose --default'):
                     line = new_default_command
                 sys.stdout.write(line)
@@ -141,7 +142,7 @@ def set_default_entry():
             print("Entry ID not found in menu file")
 
 def check_image_in_use(image):
-    with open('/pxe/tftp/boot.ipxe', 'r') as pxe_search:
+    with open(PXE.zfs_pool + '/tftp/boot.ipxe', 'r') as pxe_search:
         for line in pxe_search:
             if line.startswith('kernel'):
                 image_scan = re.search(r'\b'+image+'\s', line)
