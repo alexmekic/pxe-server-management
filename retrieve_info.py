@@ -1,4 +1,5 @@
 from netifaces import interfaces, ifaddresses, AF_INET
+from zfs_pool import PXE
 import subprocess, os
 
 def active_ip():
@@ -9,7 +10,7 @@ def active_ip():
                 ip_list.append(link['addr'])
                 subnet_list.append(link['netmask'])
         except KeyError:
-                continue
+            continue
     for ip_check in ip_list:
         with open('/etc/rc.conf','r') as ip_conf_check:
             if ip_check in ip_conf_check.read():
@@ -19,7 +20,7 @@ def active_ip():
 def get_image_partitions(image_dir):
     partition_list = []
     partitions = ' '
-    with open('/pxe/images/' + image_dir + '/Info-saved-by-cmd.txt', 'r') as f:
+    with open(PXE.zfs_pool + '/images/' + image_dir + '/Info-saved-by-cmd.txt', 'r') as f:
         part_command = f.readline()
     for word in part_command.split():
         if word.startswith('sd'):
@@ -37,7 +38,7 @@ def zfs_health():
     if zfs_state == "ONLINE" and zfs_online_errors:
         subprocess.call("zpool status", shell=True)
         print("Disk errors have been reported on the PXE storage pool. Review output above for further action required.")
-        input("Press Enter to continue loading PXE Management Application...")
+        input("Press Enter to continue loading...")
         return True
     elif zfs_state == "DEGRADED" or zfs_state == "UNAVIL":
         subprocess.call("zpool status", shell=True)
