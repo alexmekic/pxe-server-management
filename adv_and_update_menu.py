@@ -47,9 +47,9 @@ def adv_menu(ip_addr, netmask_addr):
         elif adv_prompt == "2":
             change_server_config.change_dhcp_range()
         elif adv_prompt == "3":
-            print("Enter new admin login account password.")
+            print("Enter new login password.")
             subprocess.call('passwd', shell=True)
-            print("Enter new admin Samba password for access of files on server from Windows.")
+            print("Enter new Samba password for network access over Windows.")
             subprocess.call('smbpasswd', shell=True)
         elif adv_prompt == "4":
             subprocess.call('sudo chmod 770 /' + PXE.zfs_pool + '/images', shell=True)
