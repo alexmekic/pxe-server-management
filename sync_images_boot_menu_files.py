@@ -23,7 +23,7 @@ def copy_entry_file(main_server_ip, second_server_ip, direction):
             print("Uploading boot menu file to " + second_server_ip + "...", end='', flush=True)
             filepath = Path(PXE.zfs_pool + '/nfsmount/boot.ipxe')
             filepath.rename(filepath.with_suffix('.ipxe.bak'))
-            shutil.copyfile(PXE.zfs_pool + '/tftp/boot.ipxe', PXE.zfs_pool + '/nfsmount/boot.ipxe')
+            shutil.copy2(PXE.zfs_pool + '/tftp/boot.ipxe', PXE.zfs_pool + '/nfsmount/')
             with fileinput.FileInput(PXE.zfs_pool + '/nfsmount/boot.ipxe', inplace=True) as file:
                 for line in file:
                     print(line.replace(main_server_ip, second_server_ip), end='')
@@ -31,7 +31,7 @@ def copy_entry_file(main_server_ip, second_server_ip, direction):
             print("Downloading boot menu file from " + second_server_ip + "...", end='', flush=True)
             filepath = Path(PXE.zfs_pool + '/tftp/boot.ipxe')
             filepath.rename(filepath.with_suffix('.ipxe.bak'))
-            shutil.copyfile(PXE.zfs_pool + '/nfsmount/boot.ipxe', PXE.zfs_pool + '/tftp/boot.ipxe')
+            shutil.copy2(PXE.zfs_pool + '/nfsmount/boot.ipxe', PXE.zfs_pool + '/tftp/')
             with fileinput.FileInput(PXE.zfs_pool + '/tftp/boot.ipxe', inplace=True) as file:
                 for line in file:
                     print(line.replace(main_server_ip, second_server_ip), end='')
