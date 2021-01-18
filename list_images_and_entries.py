@@ -1,20 +1,21 @@
 import os, subprocess
+from zfs_pool import PXE
 from itertools import islice
 from netifaces import interfaces, ifaddresses, AF_INET
 
 def list_images():
     image_list = []
-    print('{:<7s}{:<30s}{}'.format("Index:", "Images:", "Size:"))
-    for index, images in enumerate(os.listdir("/pxe/images"), start=0):
+    print('{:<7s}{:<35s}{}'.format("Index:", "Images:", "Size:"))
+    for index, images in enumerate(os.listdir(PXE.zfs_pool + "/images"), start=0):
         image_list.append(images)
-        imagesize = subprocess.check_output(['du','-sh', "/pxe/images/" + images]).split()[0].decode('utf-8')
-        print('{:<7s}{:<30s}{}'.format(str(index), images, imagesize))
+        imagesize = subprocess.check_output(['du','-sh', PXE.zfs_pool + "/images/" + images]).split()[0].decode('utf-8')
+        print('{:<7s}{:<35s}{}'.format(str(index), images, imagesize))
     return image_list
 
 def list_entry():
     entry_id, entry_items, attached_image = [], [], []
     restore_types = ['restoredisk', 'restoreparts']
-    with open("/pxe/tftp/boot.ipxe", "r") as pxe_file:
+    with open(PXE.zfs_pool + "/tftp/boot.ipxe", "r") as pxe_file:
         for entry_line in pxe_file:
             if entry_line.startswith("item"):
                 entry_id.append(entry_line.split(' ', 2)[1])
@@ -30,7 +31,7 @@ def list_entry():
         if id_find == 'shell' or id_find == 'exit':
             attached_image.append('')
         else:
-            with open('/pxe/tftp/boot.ipxe', 'r') as f:
+            with open(PXE.zfs_pool + "/tftp/boot.ipxe", 'r') as f:
                 for line in f:
                     if line.rstrip() == ":" + id_find:
                         restore_flag = False
