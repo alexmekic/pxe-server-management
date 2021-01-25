@@ -4,7 +4,7 @@ import os, re, glob, sys, platform
 from zfs_pool import PXE
 
 def main():
-    management_ver = "1.9.1"
+    management_ver = "1.9.2"
     if not retrieve_info.zfs_health():
         print("Application terminated due to disk error detected in storage pool")
         sys.exit()
@@ -59,7 +59,7 @@ def main():
 def user_input():
     while True:
         options = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '0']
-        print("PXE Server Management Application v2.0 Beta 2\n")
+        print("PXE Server Management Application v2.0 Beta 3\n")
         print("1: Create new boot entry")
         print("2: List boot entries")
         print("3: List restore images\n")
