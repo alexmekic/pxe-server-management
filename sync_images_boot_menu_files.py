@@ -3,10 +3,10 @@ import subprocess, os, shutil, dirsync, fileinput
 from zfs_pool import PXE
 from pathlib import Path
 
-def mount_network_dir(backup_storage_pool, second_server_ip):
+def mount_network_dir(backup_storage_pool, subdirectory, second_server_ip):
     print("Mounting " + backup_storage_pool + " from " + second_server_ip + "...", end='', flush=True)
     os.mkdir(PXE.zfs_pool + '/nfsmount')
-    exit_code = subprocess.call('sudo mount_nfs -o retrycnt=1 ' + second_server_ip + ":/" + backup_storage_pool + " " + PXE.zfs_pool + "/nfsmount", shell=True)
+    exit_code = subprocess.call('sudo mount_nfs -o retrycnt=1 ' + second_server_ip + ":/" + backup_storage_pool + "/" + subdirectory + " " + PXE.zfs_pool + "/nfsmount", shell=True)
     if exit_code != 0:
         print("failed")
         print("Unable to mount remote network directory")
@@ -54,7 +54,7 @@ def sync_images():
     except:
         print("failed")
 
-def sync_server(main_server_ip, sync_type):
+def sync_server(main_server_ip, subdirectory, sync_type):
     while True:
         second_server_ip = input("Enter IP address of secondary/backup server (x to exit): ")
         if second_server_ip == "x":
@@ -66,12 +66,12 @@ def sync_server(main_server_ip, sync_type):
             if ping_response == 0:
                 print("Success")
                 while True:
-                    backup_storage_pool = input("Enter full path of storage pool from backup server (0 to exit): ")
+                    backup_storage_pool = input("Enter name of storage pool from backup server (0 to exit): ")
                     if backup_storage_pool == "0":
                         print("Operation aborted")
                         break
                     else:
-                        if mount_network_dir(backup_storage_pool, second_server_ip):
+                        if mount_network_dir(backup_storage_pool, subdirectory, second_server_ip):
                             if sync_type == "1":
                                 sync_images()
                             elif sync_type == "2":
@@ -97,12 +97,14 @@ def sync_menu(main_server_ip):
         print("PXE Server Syncing Menu\n")
         print("1: Sync images with another server")
         print("2: Upload/backup boot menu file to another server")
-        print("3: Download boot menu file from another server")
-        print()
+        print("3: Download boot menu file from another server\n")
+        print("0: Exit back to main menu\n")
         sync_prompt = input("> ")
         if sync_prompt == '0':
             break
-        elif sync_prompt in options:
-            sync_server(main_server_ip, sync_prompt)
+        elif sync_prompt == '1':
+            sync_server(main_server_ip, 'images', sync_prompt)
+        elif sync_prompt == '2' or sync_prompt == '3':
+            sync_server(main_server_ip, 'tftp', sync_prompt)
         else:
             print("Invalid Option") 
