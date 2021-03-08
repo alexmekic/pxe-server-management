@@ -1,4 +1,4 @@
-# Clonezilla iPXE Server Management Application
+# Manage your Deployed Clonezilla PXE Server
 
 Easily manage Clonezilla iPXE boot menu entries and operating system restore images backed up written in Python for restoring images to client computers over network
 
